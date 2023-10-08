@@ -1,34 +1,26 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Input, Text } from 'react-native-elements';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from './screens/Login';
+import Principal from './screens/Principal';
+import Cadastro from './screens/Cadastro';
 
-export default function App() {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+const Stack = createStackNavigator();
+
+function MyStack() {
   return (
-    <View style={styles.container}>
-      <Text h2>asdfasdf</Text>
-      <Input
-        placeholder="E-mail"
-        leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-        onChangeText={(value) => setEmail(value)}
-        keyboardType="email-address"
-      />
-      <Input
-        placeholder="Senha"
-        leftIcon={{ type: 'font-awesome', name: 'lock' }}
-        onChangeText={(value) => setPassword(value)}
-        keyboardType=""
-      />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Principal" component={Principal} />
+      <Stack.Screen name="Cadastro" component={Cadastro} />
+    </Stack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
+  );
+}
