@@ -5,6 +5,13 @@ import { StyleSheet, View } from 'react-native';
 import { Button, CheckBox, Input, Text } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import { TextInputMask } from 'react-native-masked-text';
+import {
+  Button as PaperButton,
+  Provider,
+  Dialog,
+  Paragraph,
+  Portal,
+} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../style/MainStyle';
 import usuarioService from '../services/UsuarioService';
@@ -85,8 +92,7 @@ export default function Cadastro({ navigation }) {
         .then((response) => {
           setLoading(false);
           const title = response.data.status ? 'Sucesso!' : 'Erro!';
-          Alert.alert('Sucesso!', response.data.message);
-          console.log(response.data);
+          Alert.alert(title, response.data.message);
         })
         .catch((error) => {
           setLoading(false);
