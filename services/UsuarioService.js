@@ -1,13 +1,15 @@
+import { AsyncStorage } from 'react-native';
 import axios from 'axios';
+
 class UsuarioService {
   async cadastrar(data) {
     return axios({
-      method: 'POST',
       url: 'http://192.168.1.3:3000/usuario/cadastrar',
-      data: data,
+      method: 'POST',
       timeout: 5000,
+      data: data,
       headers: {
-        accept: 'application/json',
+        Accept: 'application/json',
       },
     })
       .then((response) => {
@@ -17,6 +19,25 @@ class UsuarioService {
         return Promise.reject(error);
       });
   }
+  async login(data) {
+    return axios({
+      url: 'http://192.168.1.3:3000/usuario/login',
+      method: 'POST',
+      timeout: 5000,
+      data: data,
+      headers: {
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => {
+        AsyncStorage.setItem('TOKEN', response.data.access_token);
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  }
 }
+
 const usuarioService = new UsuarioService();
 export default usuarioService;

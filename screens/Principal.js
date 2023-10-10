@@ -3,6 +3,8 @@ import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Feed() {
   return (
@@ -12,10 +14,17 @@ function Feed() {
   );
 }
 
+const logout = () => {};
+
 function Profile() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Profile!</Text>
+      <Button
+        icon={<Icon name="check" size={15} color="white" />}
+        title="Sair"
+        onPress={() => logout()}
+      />
     </View>
   );
 }

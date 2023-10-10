@@ -31,6 +31,7 @@ export default function Cadastro({ navigation }) {
   const [errorPassword, setErrorPassword] = useState(null);
   const [errorConfirmPassword, setErrorConfirmPassword] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [errorTermos, setErrorTermos] = useState(null);
 
   let cpfField = null;
   let telefoneField = null;
@@ -43,6 +44,7 @@ export default function Cadastro({ navigation }) {
     setErrorPassword(null);
     setErrorTelefone(null);
     setErrorConfirmPassword(null);
+    setErrorTermos(null);
 
     const re =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -74,6 +76,10 @@ export default function Cadastro({ navigation }) {
       setErrorConfirmPassword('Senhas não coincidem');
       error = true;
     }
+    if (!isSelected) {
+      setErrorTermos('Aceite os termos');
+      error = true;
+    }
     return !error;
   };
 
@@ -83,9 +89,9 @@ export default function Cadastro({ navigation }) {
       let data = {
         email: email,
         nome: nome,
-        cpf: cpf,
+        senha: password,
         telefone: telefone,
-        password: password,
+        cpf: cpf,
       };
       usuarioService
         .cadastrar(data)
@@ -186,8 +192,10 @@ export default function Cadastro({ navigation }) {
           checked={isSelected}
           onPress={() => {
             setSelected(!isSelected);
+            setErrorTermos(null);
           }}
         />
+        <Text style={styles.errorMessage}>{errorTermos}</Text>
         {isLoading && <Text>Carregando...</Text>}
 
         {!isLoading && (
