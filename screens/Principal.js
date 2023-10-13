@@ -1,30 +1,13 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Perfil from './Perfil';
 
-function Feed() {
+function Carteira() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Feed!</Text>
-    </View>
-  );
-}
-
-const logout = () => {};
-
-function Profile() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
-      <Button
-        icon={<Icon name="check" size={15} color="white" />}
-        title="Sair"
-        onPress={() => logout()}
-      />
+      <Text>Carteira</Text>
     </View>
   );
 }
@@ -43,18 +26,36 @@ export default function Principal() {
   return (
     <Tab.Navigator
       initialRouteName="Feed"
-      tabBarOptions={{
-        activeTintColor: '#e91e63',
-      }}
+      screenOptions={({ route }) => ({
+        tabBarActiveTintColor: '#e91e63',
+        tabBarLabelStyle: {
+          fontSize: 12,
+        },
+        tabBarStyle: {
+          display: 'flex',
+        },
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+
+          if (route.name === 'carteira') {
+            iconName = 'home';
+          } else if (route.name === 'Notifications') {
+            iconName = 'bell';
+          } else if (route.name === 'Perfil') {
+            iconName = 'account';
+          }
+
+          return (
+            <MaterialCommunityIcons name={iconName} color={color} size={size} />
+          );
+        },
+      })}
     >
       <Tab.Screen
-        name="Feed"
-        component={Feed}
+        name="carteira"
+        component={Carteira}
         options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
+          tabBarLabel: 'Carteira',
         }}
       />
       <Tab.Screen
@@ -62,19 +63,13 @@ export default function Principal() {
         component={Notifications}
         options={{
           tabBarLabel: 'Updates',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="bell" color={color} size={size} />
-          ),
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="Perfil"
+        component={Perfil}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
+          tabBarLabel: 'Perfil',
         }}
       />
     </Tab.Navigator>
