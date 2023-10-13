@@ -17,7 +17,7 @@ Este é um projeto para um aplicativo de controle financeiro desenvolvido em Exp
 
 Antes de iniciar, certifique-se de que você tenha o seguinte instalado em sua máquina:
 
-- [Node.js](https://nodejs.org/) -  Versão 18.18.0 ou superior
+- [Node.js](https://nodejs.org/) -  Versão 18.18.0
 - [Expo CLI](https://docs.expo.dev/get-started/installation/) - Para desenvolvimento Expo
 - Um editor de código de sua escolha (VSCode, Sublime Text, etc.)
 
