@@ -1,31 +1,17 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Perfil from './Perfil';
-
-function Carteira() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Carteira</Text>
-    </View>
-  );
-}
-
-function Notifications() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Notifications!</Text>
-    </View>
-  );
-}
+import Carteira from './Carteira';
+import ContasEGastos from './ContasEGastos';
+import Servicos from './Servicos';
 
 const Tab = createBottomTabNavigator();
 
 export default function Principal() {
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="Carteira"
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: '#e91e63',
         tabBarLabelStyle: {
@@ -37,10 +23,12 @@ export default function Principal() {
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
-          if (route.name === 'carteira') {
-            iconName = 'home';
+          if (route.name === 'Carteira') {
+            iconName = 'wallet';
           } else if (route.name === 'Notifications') {
             iconName = 'bell';
+          } else if (route.name === 'Serviços') {
+            iconName = 'format-list-checks';
           } else if (route.name === 'Perfil') {
             iconName = 'account';
           }
@@ -52,17 +40,37 @@ export default function Principal() {
       })}
     >
       <Tab.Screen
-        name="carteira"
+        name="Carteira"
         component={Carteira}
         options={{
           tabBarLabel: 'Carteira',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="wallet" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
-        name="Notifications"
-        component={Notifications}
+        name="Contas E Gastos"
+        component={ContasEGastos}
         options={{
-          tabBarLabel: 'Updates',
+          tabBarLabel: 'Contas e Gastos',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="format-list-checks"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Serviços"
+        component={Servicos}
+        options={{
+          tabBarLabel: 'Serviços',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen

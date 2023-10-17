@@ -114,7 +114,7 @@ export default function Cadastro({ navigation }) {
       keyboardVerticalOffset={'100'}
     >
       <ScrollView style={{ width: '100%' }}>
-        <Text style={{ textAlign: 'center' }} h2>
+        <Text style={{ textAlign: 'center', marginTop: 70 }} h2>
           Cadastro
         </Text>
 
