@@ -29,6 +29,7 @@ export default function Login({ navigation }) {
         });
       })
       .catch((error) => {
+        console.log(error);
         setLoading(false);
         Alert.alert('Usuario não existe');
       });

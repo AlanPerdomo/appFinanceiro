@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import styles from '../style/MainStyle';
 export default function Perfil({ navigation }) {
   const logout = async (navigation) => {
     await AsyncStorage.removeItem('TOKEN');
@@ -17,6 +17,7 @@ export default function Perfil({ navigation }) {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Perfil</Text>
       <Button
+        buttonStyle={styles.buttonStyle}
         icon={<Icon name="check" size={15} color="white" />}
         title="Sair"
         onPress={() => logout(navigation)}
