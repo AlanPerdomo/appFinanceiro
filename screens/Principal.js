@@ -5,6 +5,8 @@ import Perfil from './Perfil';
 import Carteira from './Carteira';
 import ContasEGastos from './ContasEGastos';
 import Servicos from './Servicos';
+import CadastrarDespesa from './CadastrarDespesa';
+import CadastrarEntrada from './CadastrarEntrada';
 
 const Tab = createBottomTabNavigator();
 
@@ -50,16 +52,12 @@ export default function Principal() {
         }}
       />
       <Tab.Screen
-        name="Contas E Gastos"
+        name="Entradas e Despesas"
         component={ContasEGastos}
         options={{
-          tabBarLabel: 'Contas e Gastos',
+          tabBarLabel: 'Entradas/Despesas',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="format-list-checks"
-              color={color}
-              size={size}
-            />
+            <MaterialCommunityIcons name="transfer" color={color} size={size} />
           ),
         }}
       />

@@ -5,6 +5,17 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 10,
   },
+  title: {
+    width: '100%',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+    marginTop: 20,
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+  },
   cancelButton: {
     backgroundColor: '#c00',
   },

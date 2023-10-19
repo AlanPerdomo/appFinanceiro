@@ -1,39 +1,43 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../style/MainStyle';
 
 export default function ContasEGastos({ navigation }) {
-  function navigateToAddEntry(tipoEntrada) {
-    navigation.navigate('Movimentacao', { tipoEntrada });
+  function cadastrarEntrada(tipoEntrada) {
+    navigation.navigate('CadastrarEntrada', { tipoEntrada });
   }
+  function cadastrarDespesa(tipoDespesa) {
+    navigation.navigate('CadastrarDespesa', { tipoDespesa });
+  }
+
   return (
     <View style={styles.container}>
-      <Text>O que você deseja cadastrar?</Text>
-      <Button
-        buttonStyle={styles.buttonStyle}
-        icon={<Icon name="plus" size={15} color="white" />}
-        title={'Valor de Entrada'}
-        onPress={() => navigateToAddEntry('entrada')}
+      <Image
+        style={{
+          width: 200,
+          height: 200,
+          marginBottom: 20,
+          alignSelf: 'center',
+        }}
+        source={require('../assets/logo.png')}
       />
+      <Text style={styles.title}>
+        O que você deseja fazer? {'\n'}Adicionar uma entrada ou uma despesa?
+      </Text>
       <Button
         buttonStyle={styles.buttonStyle}
-        icon={<Icon name="minus" size={15} color="white" />}
-        title={'Conta a Pagar'}
-        onPress={() => navigateToAddEntry('despesa')}
+        icon={<Icon name="plus" size={15} color="green" />}
+        title={' Adicionar Entrada'}
+        onPress={() => cadastrarEntrada('entrada')}
       />
+
       <Button
         buttonStyle={styles.buttonStyle}
-        icon={<Icon name="repeat" size={15} color="white" />}
-        title={'Conta Recorrente Mensal'}
-        onPress={() => navigateToAddEntry('despesaMensal')}
-      />
-      <Button
-        buttonStyle={styles.buttonStyle}
-        icon={<Icon name="calendar" size={15} color="white" />}
-        title={'Valor Mensal de Entrada'}
-        onPress={() => navigateToAddEntry('entradaMensal')}
+        icon={<Icon name="minus" size={15} color="red" />}
+        title={' Adicionar Despesa'}
+        onPress={() => cadastrarDespesa('despesa')}
       />
     </View>
   );
