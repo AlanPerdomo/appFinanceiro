@@ -5,14 +5,16 @@ import {
   View,
   StyleSheet,
   Image,
+  Alert,
 } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import styles from '../style/MainStyle';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import entradaService from '../services/EntradaService';
 
-export default function CadastrarEntrada(navigation) {
+export default function CadastrarEntrada({ navigation }) {
   const [titulo, setTitulo] = useState('');
   const [comentario, setComentario] = useState('');
   const [valor, setValor] = useState('');
@@ -22,27 +24,42 @@ export default function CadastrarEntrada(navigation) {
 
   const validar = () => {
     let error = false;
-    setErrorTitulo(null);
-
-    if (titulo == null) {
-      setErrorTitulo('Título é obrigatório');
+    setErrorValor(null);
+    if (valor == '' || valor == null) {
+      setErrorValor('Valor é obrigatório');
+      error = true;
     }
-    if (valor == null) {
-      setErrorTitulo('Valor é obrigatório');
-    }
+    return !error;
   };
   const salvar = () => {
     if (validar()) {
       setLoading(true);
       let data = {
-        titulo: titulo,
+        titulo: titulo || '',
         valor: valor,
-        comentario: comentario,
+        descricao: comentario || '',
       };
+      console.log(data);
+      entradaService
+        .cadastrar(data)
+        .then((response) => {
+          setLoading(false);
+          Alert.alert('Sucesso', response.data.message);
+          setValor('');
+          setComentario('');
+          setTitulo('');
+        })
+        .catch((error) => {
+          setLoading(false);
+          Alert.alert('Erro', error.response.data.message);
+        });
     }
   };
   const voltar = () => {
-    navigation.navigate('Principal');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Principal' }],
+    });
   };
 
   return (
@@ -62,7 +79,9 @@ export default function CadastrarEntrada(navigation) {
           }}
           source={require('../assets/logo.png')}
         />
-        <Text style={styles.title}>Cadastrar Entrada</Text>
+        <Text style={[styles.title, specificStyle.title]}>
+          Cadastrar Entrada
+        </Text>
 
         <View style={styles.containerMask}>
           <TextInputMask
@@ -107,15 +126,15 @@ export default function CadastrarEntrada(navigation) {
         {!isLoading && (
           <>
             <Button
-              icon={<Icon name="check" size={15} color="white" />}
-              buttonStyle={styles.buttonStyle}
-              title="Salvar"
-              onPress={() => salvar()} // Implemente a função de salvar
+              icon={<Icon name="check" size={15} color="green" />}
+              buttonStyle={[styles.buttonStyle, specificStyle.title]}
+              title=" Salvar"
+              onPress={() => salvar()}
             />
             <Button
               icon={<Icon name="remove" size={15} color="white" />}
               buttonStyle={styles.buttonStyle}
-              title="Cancelar"
+              title=" Cancelar"
               onPress={() => voltar()} // Implemente a função de salvar
             />
           </>
@@ -132,5 +151,8 @@ const specificStyle = StyleSheet.create({
   button: {
     width: '100%',
     marginTop: 10,
+  },
+  title: {
+    color: 'green',
   },
 });

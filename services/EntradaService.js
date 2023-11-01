@@ -16,7 +16,24 @@ class EntradaService {
       },
     })
       .then((response) => {
-        AsyncStorage.setItem('TOKEN', response.data.access_token);
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  }
+  async listarEntradasPorUsuario(usuarioId) {
+    let token = await AsyncStorage.getItem('TOKEN');
+    return axios({
+      url: Config.API_URL + 'entrada/listar/' + usuarioId,
+      method: 'GET',
+      timeout: Config.TIMEOUT_REQUEST,
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    })
+      .then((response) => {
         return Promise.resolve(response);
       })
       .catch((error) => {
@@ -24,5 +41,5 @@ class EntradaService {
       });
   }
 }
-const EntradaService = new EntradaService();
-export default EntradaService;
+const entradaService = new EntradaService();
+export default entradaService;
