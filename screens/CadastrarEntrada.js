@@ -8,7 +8,6 @@ import {
   Alert,
 } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
 import styles from '../style/MainStyle';
 import { TextInputMask } from 'react-native-masked-text';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -125,18 +124,20 @@ export default function CadastrarEntrada({ navigation }) {
         {isLoading && <Text>Carregando...</Text>}
         {!isLoading && (
           <>
-            <Button
-              icon={<Icon name="check" size={15} color="green" />}
-              buttonStyle={[styles.buttonStyle, specificStyle.title]}
-              title=" Salvar"
-              onPress={() => salvar()}
-            />
-            <Button
-              icon={<Icon name="remove" size={15} color="white" />}
-              buttonStyle={styles.buttonStyle}
-              title=" Cancelar"
-              onPress={() => voltar()} // Implemente a função de salvar
-            />
+            <View style={styles.buttonContainer}>
+              <Button
+                icon={<Icon name="check" size={15} color="green" />}
+                buttonStyle={[styles.buttonStyle, specificStyle.title]}
+                title=" Salvar"
+                onPress={() => salvar()}
+              />
+              <Button
+                icon={<Icon name="remove" size={15} color="white" />}
+                buttonStyle={styles.buttonStyle}
+                title=" Cancelar"
+                onPress={() => voltar()} // Implemente a função de salvar
+              />
+            </View>
           </>
         )}
       </View>

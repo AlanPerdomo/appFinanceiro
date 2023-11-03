@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
 
-export default function Carteira() {
+export default function Servicos() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Carteira</Text>
+      <Text>Serviços</Text>
     </View>
   );
 }

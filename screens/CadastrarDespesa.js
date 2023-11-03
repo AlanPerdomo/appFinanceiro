@@ -125,18 +125,20 @@ export default function CadastrarDespesa({ navigation }) {
         {isLoading && <Text>Carregando...</Text>}
         {!isLoading && (
           <>
-            <Button
-              icon={<Icon name="check" size={15} color="green" />}
-              buttonStyle={[styles.buttonStyle, specificStyle.title]}
-              title=" Salvar"
-              onPress={() => salvar()}
-            />
-            <Button
-              icon={<Icon name="remove" size={15} color="white" />}
-              buttonStyle={styles.buttonStyle}
-              title=" Cancelar"
-              onPress={() => voltar()} // Implemente a função de salvar
-            />
+            <View style={styles.buttonContainer}>
+              <Button
+                icon={<Icon name="check" size={15} color="green" />}
+                buttonStyle={[styles.buttonStyle, specificStyle.title]}
+                title=" Salvar"
+                onPress={() => salvar()}
+              />
+              <Button
+                icon={<Icon name="remove" size={15} color="white" />}
+                buttonStyle={styles.buttonStyle}
+                title=" Cancelar"
+                onPress={() => voltar()} // Implemente a função de salvar
+              />
+            </View>
           </>
         )}
       </View>

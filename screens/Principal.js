@@ -3,10 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Perfil from './Perfil';
 import Carteira from './Carteira';
-import ContasEGastos from './ContasEGastos';
+import EntradasEDespesas from './EntradasEDespesas';
 import Servicos from './Servicos';
-import CadastrarDespesa from './CadastrarDespesa';
-import CadastrarEntrada from './CadastrarEntrada';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +24,7 @@ export default function Principal() {
           let iconName;
 
           if (route.name === 'Carteira') {
-            iconName = 'wallet';
+            iconName = 'pie-chart';
           } else if (route.name === 'Notifications') {
             iconName = 'bell';
           } else if (route.name === 'Serviços') {
@@ -53,7 +51,7 @@ export default function Principal() {
       />
       <Tab.Screen
         name="Entradas e Despesas"
-        component={ContasEGastos}
+        component={EntradasEDespesas}
         options={{
           tabBarLabel: 'Entradas/Despesas',
           tabBarIcon: ({ color, size }) => (

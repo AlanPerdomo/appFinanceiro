@@ -47,6 +47,12 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+  },
   maskedInput: {
     flexGrow: 1,
     height: 40,

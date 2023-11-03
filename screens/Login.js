@@ -25,11 +25,12 @@ export default function Login({ navigation }) {
       username: email,
       password: password,
     };
-    console.log(data);
     usuarioService
       .login(data)
       .then((response) => {
         setLoading(false);
+        const userId = response.data.ID;
+        AsyncStorage.setItem('USER_ID', userId.toString());
         navigation.reset({
           index: 0,
           routes: [{ name: 'Principal' }],

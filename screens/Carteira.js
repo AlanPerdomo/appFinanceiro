@@ -1,47 +1,44 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View } from 'react-native';
-import entradaService from '../services/EntradaService';
+import * as React from 'react';
+import { Text, View, Image } from 'react-native';
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import styles from '../style/MainStyle';
 
-export default function Carteira() {
-  const [entradas, setEntradas] = useState([]);
-  const usuarioId = 63;
-
-  const fetchData = async () => {
-    try {
-      const response = await entradaService.listarEntradasPorUsuario(usuarioId);
-
-      const sortedEntradas = response.data.sort(
-        (a, b) => new Date(b.data) - new Date(a.data),
-      );
-
-      const recentEntradas = sortedEntradas.slice(0, 10);
-
-      setEntradas(recentEntradas);
-    } catch (error) {
-      console.error('Erro ao buscar dados: ', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 2000);
-    return () => clearInterval(interval);
-  }, []);
+export default function Carteira({ navigation }) {
+  function cadastrarEntrada(tipoEntrada) {
+    navigation.navigate('CadastrarEntrada', { tipoEntrada });
+  }
+  function cadastrarDespesa(tipoDespesa) {
+    navigation.navigate('CadastrarDespesa', { tipoDespesa });
+  }
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Carteira</Text>
-      <Text>5 Entradas Mais Recentes:</Text>
-      {entradas.map((entrada, index) => (
-        <View key={index}>
-          <Text>{entrada.titulo}</Text>
-          <Text style={{ fontWeight: 'bold', color: 'green' }}>
-            Valor: {entrada.valor} BRL
-          </Text>
-          <Text>Data: {entrada.data}</Text>
-          {/* Adicione mais informações da entrada, se necessário */}
-        </View>
-      ))}
+    <View style={styles.container}>
+      <Image
+        style={{
+          width: 200,
+          height: 200,
+          marginBottom: 20,
+          alignSelf: 'center',
+        }}
+        source={require('../assets/logo.png')}
+      />
+      <Text style={styles.title}>Bem Vinda(o),</Text>
+      <View style={styles.buttonContainer}>
+        <Button
+          buttonStyle={styles.buttonStyle}
+          icon={<Icon name="plus" size={15} color="green" />}
+          title={' Adicionar Entrada'}
+          onPress={() => cadastrarEntrada('entrada')}
+        />
+
+        <Button
+          buttonStyle={styles.buttonStyle}
+          icon={<Icon name="minus" size={15} color="red" />}
+          title={' Adicionar Despesa'}
+          onPress={() => cadastrarDespesa('despesa')}
+        />
+      </View>
     </View>
   );
 }
