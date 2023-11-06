@@ -107,11 +107,14 @@ export default function Cadastro({ navigation }) {
     }
   };
 
+  const voltar = () => {
+    navigation.goBack();
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={[styles.container, specificStyle.specificContainer]}
-      keyboardVerticalOffset={'100'}
     >
       <ScrollView style={{ width: '100%' }}>
         <Text style={{ textAlign: 'center', marginTop: 70 }} h2>
@@ -199,12 +202,20 @@ export default function Cadastro({ navigation }) {
         {isLoading && <Text>Carregando...</Text>}
 
         {!isLoading && (
-          <Button
-            icon={<Icon name="check" size={15} color="white" />}
-            title="Salvar"
-            buttonStyle={styles.buttonStyle}
-            onPress={() => salvar()}
-          />
+          <>
+            <Button
+              icon={<Icon name="check" size={15} color="white" />}
+              title="Salvar"
+              buttonStyle={styles.buttonStyle}
+              onPress={() => salvar()}
+            />
+            <Button
+              icon={<Icon name="remove" size={15} color="white" />}
+              buttonStyle={styles.buttonStyle}
+              title=" Cancelar"
+              onPress={() => voltar()}
+            />
+          </>
         )}
       </ScrollView>
     </KeyboardAvoidingView>
@@ -213,7 +224,7 @@ export default function Cadastro({ navigation }) {
 
 const specificStyle = StyleSheet.create({
   specificContainer: {
-    padding: 10,
+    paddingTop: 10,
   },
   button: {
     width: '100%',
