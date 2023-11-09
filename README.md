@@ -74,4 +74,3 @@ Este projeto está sob a Licença MIT - consulte o arquivo [LICENSE](LICENSE) pa
 
 ---
 
-Sinta-se à vontade para personalizar este README de acordo com as necessidades do seu projeto, adicionando informações adicionais, como capturas de tela, instruções detalhadas ou qualquer outra coisa que seja relevante para os usuários e colaboradores.
