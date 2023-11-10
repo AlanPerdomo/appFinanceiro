@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function EntradasEDespesas() {
   const [entradas, setEntradas] = useState([]);
   const [despesas, setDespesas] = useState([]);
+  const [somaEntradas, setSomaEntradas] = useState(0);
+  const [somaDespesas, setSomaDespesas] = useState(0);
 
   const fetchData = async () => {
     try {
@@ -27,14 +29,21 @@ export default function EntradasEDespesas() {
       );
 
       const recentEntradas = sortedEntradas.slice(0, 15);
-      const recentDespesas = sortedDespesas.slice(0, 15);
-
       setEntradas(recentEntradas);
+      const somaEntradasCalculada = calcularSoma(recentEntradas);
+      setSomaEntradas(somaEntradasCalculada);
+
+      const recentDespesas = sortedDespesas.slice(0, 15);
       setDespesas(recentDespesas);
+      const somaDespesasCalculada = calcularSoma(recentDespesas);
+      setSomaDespesas(somaDespesasCalculada);
     } catch (error) {
       console.error('Erro ao buscar dados: ', error);
     }
   };
+  function calcularSoma(itens) {
+    return itens.reduce((total, item) => total + extrairValor(item.valor), 0);
+  }
 
   function formatarData(data) {
     const dataObj = new Date(data);
@@ -49,6 +58,19 @@ export default function EntradasEDespesas() {
     }
   }
 
+  const extrairValor = (valorString) => {
+    const valorLimpo = valorString.replace(/[^\d,]/g, ''); // Remove caracteres não numéricos, exceto vírgulas
+    const valorNumerico = Number(valorLimpo.replace(',', '.'));
+
+    return isNaN(valorNumerico) ? 0 : valorNumerico;
+  };
+  function formatarMoeda(valor) {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(valor);
+  }
+
   useEffect(() => {
     fetchData();
     const interval = setInterval(fetchData, 2000);
@@ -59,6 +81,9 @@ export default function EntradasEDespesas() {
     <ScrollView style={specificStyle.specificContainer}>
       <View style={specificStyle.rowContainer}>
         <View style={specificStyle.entradas}>
+          <Text style={specificStyle.specificContainer}>
+            Soma Entradas: {formatarMoeda(somaEntradas)}
+          </Text>
           <Text style={specificStyle.specificContainer}>Entradas Recentes</Text>
           {entradas.length === 0 ? (
             <Text>Nenhuma entrada registrada.</Text>
@@ -79,6 +104,9 @@ export default function EntradasEDespesas() {
           )}
         </View>
         <View style={specificStyle.despesas}>
+          <Text style={specificStyle.specificContainer}>
+            Soma Despesas: {formatarMoeda(somaDespesas)}
+          </Text>
           <Text style={specificStyle.specificContainer}>Despesas Recentes</Text>
           {despesas.length === 0 ? (
             <Text>Nenhuma despesa registrada.</Text>
@@ -112,7 +140,7 @@ const specificStyle = StyleSheet.create({
   },
   specificContainer: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
     textAlign: 'center',
   },
   entradas: {

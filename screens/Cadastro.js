@@ -99,6 +99,12 @@ export default function Cadastro({ navigation }) {
           setLoading(false);
           const title = response.data.status ? 'Sucesso!' : 'Erro!';
           Alert.alert(title, response.data.message);
+          if (response.data.status) {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Login' }],
+            });
+          }
         })
         .catch((error) => {
           setLoading(false);

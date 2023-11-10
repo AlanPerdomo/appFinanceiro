@@ -59,6 +59,62 @@ class UsuarioService {
         return Promise.reject(error);
       });
   }
+
+  async obterUsuario(usuarioId) {
+    return axios({
+      url: Config.API_URL + 'usuario/' + usuarioId,
+      method: 'GET',
+      timeout: Config.TIMEOUT_REQUEST,
+      headers: {
+        ...Config.HEADER_REQUEST,
+        Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
+      },
+    })
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  }
+
+  // async alterarSenha(data) {
+  //   return axios({
+  //     url: Config.API_URL + 'usuario/alterar-senha',
+  //     method: 'POST',
+  //     timeout: Config.TIMEOUT_REQUEST,
+  //     data: data,
+  //     headers: {
+  //       ...Config.HEADER_REQUEST,
+  //       Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       return Promise.resolve(response);
+  //     })
+  //     .catch((error) => {
+  //       return Promise.reject(error);
+  //     });
+  // }
+
+  // async alterarDados(data) {
+  //   return axios({
+  //     url: Config.API_URL + 'usuario/alterar-dados',
+  //     method: 'POST',
+  //     timeout: Config.TIMEOUT_REQUEST,
+  //     data: data,
+  //     headers: {
+  //       ...Config.HEADER_REQUEST,
+  //       Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
+  //     },
+  //   })
+  //     .then((response) => {
+  //       return Promise.resolve(response);
+  //     })
+  //     .catch((error) => {
+  //       return Promise.reject(error);
+  //     });
+  // }
 }
 
 const usuarioService = new UsuarioService();

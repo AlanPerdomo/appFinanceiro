@@ -40,6 +40,15 @@ class EntradaService {
         return Promise.reject(error);
       });
   }
+  async getTotalEntradas(usuarioId) {
+    try {
+      const responseEntrada = await this.listarEntradasPorUsuario(usuarioId);
+      return calcularSoma(responseEntrada.data);
+    } catch {}
+    function calcularSoma(itens) {
+      return itens.reduce((total, item) => total + extrairValor(item.valor), 0);
+    }
+  }
 }
 const entradaService = new EntradaService();
 export default entradaService;
