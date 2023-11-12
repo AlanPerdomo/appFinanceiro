@@ -78,43 +78,61 @@ class UsuarioService {
       });
   }
 
-  // async alterarSenha(data) {
-  //   return axios({
-  //     url: Config.API_URL + 'usuario/alterar-senha',
-  //     method: 'POST',
-  //     timeout: Config.TIMEOUT_REQUEST,
-  //     data: data,
-  //     headers: {
-  //       ...Config.HEADER_REQUEST,
-  //       Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       return Promise.resolve(response);
-  //     })
-  //     .catch((error) => {
-  //       return Promise.reject(error);
-  //     });
-  // }
+  async deletar(usuarioId) {
+    return axios({
+      url: Config.API_URL + 'usuario/' + usuarioId,
+      method: 'DELETE',
+      timeout: Config.TIMEOUT_REQUEST,
+      headers: {
+        ...Config.HEADER_REQUEST,
+        Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
+      },
+    })
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  }
 
-  // async alterarDados(data) {
-  //   return axios({
-  //     url: Config.API_URL + 'usuario/alterar-dados',
-  //     method: 'POST',
-  //     timeout: Config.TIMEOUT_REQUEST,
-  //     data: data,
-  //     headers: {
-  //       ...Config.HEADER_REQUEST,
-  //       Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
-  //     },
-  //   })
-  //     .then((response) => {
-  //       return Promise.resolve(response);
-  //     })
-  //     .catch((error) => {
-  //       return Promise.reject(error);
-  //     });
-  // }
+  async alterarSenha(usuarioID, novaSenha) {
+    return axios({
+      url: Config.API_URL + 'usuario' + usuarioID + '/alterar-senha',
+      method: 'PUT',
+      timeout: Config.TIMEOUT_REQUEST,
+      data: { novaSenha },
+      headers: {
+        ...Config.HEADER_REQUEST,
+        Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
+      },
+    })
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  }
+
+  async alterarDados(usuarioId, data) {
+    return axios({
+      url: Config.API_URL + 'usuario/' + usuarioId + '/alterar-dados',
+      method: 'PUT',
+      timeout: Config.TIMEOUT_REQUEST,
+      data: data,
+      headers: {
+        ...Config.HEADER_REQUEST,
+        Authorization: `Bearer ${await AsyncStorage.getItem('TOKEN')}`,
+      },
+    })
+      .then((response) => {
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        return Promise.reject(error);
+      });
+  }
 }
 
 const usuarioService = new UsuarioService();

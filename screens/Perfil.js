@@ -11,9 +11,12 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import usuarioService from '../services/UsuarioService';
 export default function Perfil({ navigation }) {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+
+  const userProfilePictureUrl = 'https://via.placeholder.com/150';
+  const usuarioId = AsyncStorage.getItem('USER_ID');
 
   const logout = async () => {
     try {
@@ -51,7 +54,8 @@ export default function Perfil({ navigation }) {
         },
         {
           text: 'Excluir',
-          onPress: () => {
+          onPress: async () => {
+            usuarioService.deletar(usuarioId);
             Alert.alert(
               'Conta Excluída',
               'Sua conta foi excluída com sucesso.',
