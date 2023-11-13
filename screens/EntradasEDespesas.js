@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, FlatList } from 'react-native';
 import entradaService from '../services/EntradaService';
 import despesaService from '../services/DespesaService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,24 +16,22 @@ export default function EntradasEDespesas() {
 
       const responseEntradas =
         await entradaService.listarEntradasPorUsuario(usuarioId);
-
       const responseDespesas =
         await despesaService.listarDespesasPorUsuario(usuarioId);
 
       const sortedEntradas = responseEntradas.data.sort(
         (a, b) => new Date(b.data) - new Date(a.data),
       );
-
       const sortedDespesas = responseDespesas.data.sort(
         (a, b) => new Date(b.data) - new Date(a.data),
       );
 
-      const recentEntradas = sortedEntradas.slice(0, 15);
+      const recentEntradas = sortedEntradas;
       setEntradas(recentEntradas);
       const somaEntradasCalculada = calcularSoma(recentEntradas);
       setSomaEntradas(somaEntradasCalculada);
 
-      const recentDespesas = sortedDespesas.slice(0, 15);
+      const recentDespesas = sortedDespesas;
       setDespesas(recentDespesas);
       const somaDespesasCalculada = calcularSoma(recentDespesas);
       setSomaDespesas(somaDespesasCalculada);
@@ -41,6 +39,13 @@ export default function EntradasEDespesas() {
       console.error('Erro ao buscar dados: ', error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   function calcularSoma(itens) {
     return itens.reduce((total, item) => total + extrairValor(item.valor), 0);
   }
@@ -51,11 +56,9 @@ export default function EntradasEDespesas() {
     const mes = dataObj.toLocaleString('pt-BR', { month: 'long' });
     const ano = dataObj.getFullYear();
 
-    if (ano === new Date().getFullYear()) {
-      return `${dia} ${mes}`;
-    } else {
-      return `${dia} ${mes} ${ano}`;
-    }
+    return ano === new Date().getFullYear()
+      ? `${dia} ${mes}`
+      : `${dia} ${mes} ${ano}`;
   }
 
   const extrairValor = (valorString) => {
@@ -71,63 +74,55 @@ export default function EntradasEDespesas() {
     }).format(valor);
   }
 
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 2000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <ScrollView style={specificStyle.specificContainer}>
+    <View style={specificStyle.specificContainer}>
       <View style={specificStyle.rowContainer}>
-        <View style={specificStyle.entradas}>
+        <View style={specificStyle.listas}>
           <Text style={specificStyle.specificContainer}>
             Soma Entradas: {formatarMoeda(somaEntradas)}
           </Text>
           <Text style={specificStyle.specificContainer}>Entradas Recentes</Text>
-          {entradas.length === 0 ? (
-            <Text>Nenhuma entrada registrada.</Text>
-          ) : (
-            entradas.map((entrada, index) => (
-              <View key={index}>
-                <Text style={{ fontWeight: 'bold' }}>{entrada.titulo}</Text>
+          <FlatList
+            data={entradas}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={{ fontWeight: 'bold' }}>{item.titulo}</Text>
                 <Text style={{ fontWeight: 'bold', color: 'green' }}>
-                  Valor: {entrada.valor}
+                  Valor: {item.valor}
                 </Text>
                 <Text style={specificStyle.data}>
-                  Data: {formatarData(entrada.data)}
+                  Data: {formatarData(item.data)}
                 </Text>
                 <Text>----------------------------------</Text>
-                {/* Adicione mais informações da entrada, se necessário */}
               </View>
-            ))
-          )}
+            )}
+          />
         </View>
-        <View style={specificStyle.despesas}>
+        <View style={specificStyle.listas}>
           <Text style={specificStyle.specificContainer}>
             Soma Despesas: {formatarMoeda(somaDespesas)}
           </Text>
           <Text style={specificStyle.specificContainer}>Despesas Recentes</Text>
-          {despesas.length === 0 ? (
-            <Text>Nenhuma despesa registrada.</Text>
-          ) : (
-            despesas.map((despesa, index) => (
-              <View key={index}>
-                <Text style={{ fontWeight: 'bold' }}>{despesa.titulo}</Text>
+          <FlatList
+            data={despesas}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={{ fontWeight: 'bold' }}>{item.titulo}</Text>
                 <Text style={{ fontWeight: 'bold', color: 'red' }}>
-                  Valor: {despesa.valor}
+                  Valor: {item.valor}
                 </Text>
                 <Text style={specificStyle.data}>
-                  Data: {formatarData(despesa.data)}
+                  Data: {formatarData(item.data)}
                 </Text>
                 <Text>----------------------------------</Text>
-                {/* Adicione mais informações da despesa, se necessário */}
               </View>
-            ))
-          )}
+            )}
+          />
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 const specificStyle = StyleSheet.create({
@@ -142,16 +137,13 @@ const specificStyle = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     textAlign: 'center',
+    marginBottom: 10,
   },
-  entradas: {
+  listas: {
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-  },
-  despesas: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    marginBottom: 125, // Ajuste a margem inferior conforme necessário
   },
   data: {
     fontSize: 10,

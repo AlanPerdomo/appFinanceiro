@@ -41,10 +41,10 @@ function defineInterceptor() {
                 oldToken: token,
               })
               .then((res) => {
-                AsyncStorage.setItem('TOKEN', res.data.access_token);
+                AsyncStorage.setItem('TOKEN', res.data.token);
                 originalReq.headers[
                   'Authorization'
-                ] = `Bearer ${res.data.access_token}`;
+                ] = `Bearer ${res.data.token}`;
                 return axios(originalReq);
               });
             resolve(res);

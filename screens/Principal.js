@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Perfil from './Perfil';
@@ -65,7 +66,11 @@ export default function Principal() {
         options={{
           tabBarLabel: 'Serviços',
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="traffic-cone"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
@@ -74,6 +79,12 @@ export default function Principal() {
         component={Perfil}
         options={{
           tabBarLabel: 'Perfil',
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('../assets/userHolder.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
         }}
       />
     </Tab.Navigator>

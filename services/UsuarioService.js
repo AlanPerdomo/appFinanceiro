@@ -12,7 +12,7 @@ class UsuarioService {
       headers: Config.HEADER_REQUEST,
     })
       .then((response) => {
-        AsyncStorage.setItem('TOKEN', response.data.access_token);
+        AsyncStorage.setItem('TOKEN', response.data.token);
         return Promise.resolve(response);
       })
       .catch((error) => {
@@ -28,8 +28,8 @@ class UsuarioService {
       headers: Config.HEADER_REQUEST,
     })
       .then((response) => {
-        if (response.data.access_token) {
-          AsyncStorage.setItem('TOKEN', response.data.access_token);
+        if (response.data.token) {
+          AsyncStorage.setItem('TOKEN', response.data.token);
           return Promise.resolve(response);
         } else {
           return Promise.reject(response);
@@ -48,8 +48,8 @@ class UsuarioService {
       headers: Config.HEADER_REQUEST,
     })
       .then((response) => {
-        if (response.data.access_token) {
-          AsyncStorage.setItem('TOKEN', response.data.access_token);
+        if (response.data.token) {
+          AsyncStorage.setItem('TOKEN', response.data.token);
           return Promise.resolve(response);
         } else {
           return Promise.reject(response);

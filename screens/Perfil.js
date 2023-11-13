@@ -15,9 +15,6 @@ import usuarioService from '../services/UsuarioService';
 export default function Perfil({ navigation }) {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
 
-  const userProfilePictureUrl = 'https://via.placeholder.com/150';
-  const usuarioId = AsyncStorage.getItem('USER_ID');
-
   const logout = async () => {
     try {
       await AsyncStorage.removeItem('TOKEN');
@@ -55,15 +52,22 @@ export default function Perfil({ navigation }) {
         {
           text: 'Excluir',
           onPress: async () => {
-            usuarioService.deletar(usuarioId);
-            Alert.alert(
-              'Conta Excluída',
-              'Sua conta foi excluída com sucesso.',
-            );
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'Login' }],
-            });
+            try {
+              const usuarioId = await AsyncStorage.getItem('USER_ID');
+              await usuarioService.deletar(usuarioId);
+
+              Alert.alert(
+                'Conta Excluída',
+                'Sua conta foi excluída com sucesso.',
+              );
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            } catch (error) {
+              console.error('Erro ao excluir conta: ', error);
+              Alert.alert('Erro', 'Ocorreu um erro ao excluir a conta.');
+            }
           },
           style: 'destructive',
         },
