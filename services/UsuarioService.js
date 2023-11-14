@@ -89,9 +89,12 @@ class UsuarioService {
       },
     })
       .then((response) => {
+        console.log(response);
         return Promise.resolve(response);
       })
       .catch((error) => {
+        console.log(error.response);
+        console.log('Error');
         return Promise.reject(error);
       });
   }

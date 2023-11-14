@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import usuarioService from '../services/UsuarioService';
 export default function Perfil({ navigation }) {
   const [isSettingsModalVisible, setIsSettingsModalVisible] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
+
+  const fetchUserDetails = async () => {
+    try {
+      const response = await usuarioService.obterUsuario(
+        await AsyncStorage.getItem('USER_ID'),
+      );
+      setUsuario(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar dados: ', error);
+    }
+  };
 
   const logout = async () => {
     try {
@@ -35,7 +51,7 @@ export default function Perfil({ navigation }) {
     setIsSettingsModalVisible(false);
   };
 
-  const handleUpdateProfile = () => {
+  const handleUpdatePassword = () => {
     Alert.alert('Atualizar Dados', 'Lógica de atualização do perfil');
     handleCloseModal();
   };
@@ -54,6 +70,7 @@ export default function Perfil({ navigation }) {
           onPress: async () => {
             try {
               const usuarioId = await AsyncStorage.getItem('USER_ID');
+              console.log(usuarioId);
               await usuarioService.deletar(usuarioId);
 
               Alert.alert(
@@ -78,9 +95,51 @@ export default function Perfil({ navigation }) {
   };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Perfil</Text>
-      <TouchableOpacity onPress={handleSettingsPress}>
+    <View style={perfilStyles.container}>
+      {usuario && (
+        <View style={perfilStyles.userDetails}>
+          <View style={perfilStyles.userInfoItem}>
+            <Text style={perfilStyles.userInfoLabel}>
+              {' '}
+              <Icon name="user" size={16} color="black" />
+              Nome:
+            </Text>
+            <Text style={perfilStyles.userInfoText}>{usuario.nome}</Text>
+            <TouchableOpacity onPress={() => console.log('Alterar Nome')}>
+              <Icon name="edit" size={16} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={perfilStyles.userInfoItem}>
+            <Text style={perfilStyles.userInfoLabel}>
+              <Icon name="envelope" size={16} color="black" />
+              Email:
+            </Text>
+            <Text style={perfilStyles.userInfoText}>{usuario.email}</Text>
+            <TouchableOpacity onPress={() => console.log('Alterar Email')}>
+              <Icon name="edit" size={16} color="black" />
+            </TouchableOpacity>
+          </View>
+          <View style={perfilStyles.userInfoItem}>
+            <Text style={perfilStyles.userInfoLabel}>CPF:</Text>
+            <Text style={perfilStyles.userInfoText}>{usuario.cpf}</Text>
+          </View>
+          <View style={perfilStyles.userInfoItem}>
+            <Text style={perfilStyles.userInfoLabel}>
+              <Icon name="phone" size={16} color="black" />
+              Telefone:
+            </Text>
+            <Text style={perfilStyles.userInfoText}>{usuario.telefone}</Text>
+            <TouchableOpacity onPress={() => console.log('Alterar Telefone')}>
+              <Icon name="edit" size={16} color="black" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+
+      <TouchableOpacity
+        style={perfilStyles.settingsButton}
+        onPress={handleSettingsPress}
+      >
         <Icon name="cog" size={30} color="black" />
       </TouchableOpacity>
 
@@ -109,8 +168,8 @@ export default function Perfil({ navigation }) {
                 <Button
                   buttonStyle={perfilStyles.buttonStyle}
                   icon={<Icon name="pencil" size={15} color="white" />}
-                  title="Atualizar Dados"
-                  onPress={handleUpdateProfile}
+                  title="Alterar Senha"
+                  onPress={handleUpdatePassword}
                 />
                 <Button
                   buttonStyle={[
@@ -131,20 +190,55 @@ export default function Perfil({ navigation }) {
 }
 
 const perfilStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userDetails: {
+    width: '90%',
+    padding: 20,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: 'gray',
+    margin: 10,
+    backgroundColor: 'white',
+  },
+  userInfoItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  userInfoLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: 'black',
+  },
+  userInfoText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  settingsButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(1, 0, 0, 0.25)',
   },
   modalContent: {
     backgroundColor: 'white',
     padding: 20,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
+    paddingBottom: 50,
   },
   closeButton: {
     alignSelf: 'flex-end',
-    padding: 10,
   },
   buttonStyle: {
     marginVertical: 10,
