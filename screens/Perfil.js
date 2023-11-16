@@ -120,8 +120,13 @@ export default function Perfil({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={perfilStyles.userInfoItem}>
-            <Text style={perfilStyles.userInfoLabel}>CPF:</Text>
-            <Text style={perfilStyles.userInfoText}>{usuario.cpf}</Text>
+            <Text style={perfilStyles.userInfoLabel}>
+              <Icon name="user" size={16} color="black" />
+              CPF:
+            </Text>
+            <Text style={[perfilStyles.userInfoText, { flex: 0.65 }]}>
+              {usuario.cpf}
+            </Text>
           </View>
           <View style={perfilStyles.userInfoItem}>
             <Text style={perfilStyles.userInfoLabel}>
